@@ -43,7 +43,7 @@ function capitalizeFirstLetter(string) {
 
 function generateCode(classObject)
 {
-	var templateContents = fs.readFileSync("./java/interfaces/InterfaceTemplate.java","UTF-8");
+	var templateContents = fs.readFileSync("./java/dao/ModelClassTemplate.java","UTF-8");
 	
 
 	var definitions = [];
@@ -63,8 +63,8 @@ function generateCode(classObject)
 	var head = templateContents.match(/<head>[\s\S]*<\/head>/)[0];
 	head = head.replace("<head>","");
 	head = head.replace("</head>","");
-	head = head.replace("#package#",classObject.package);
-	head = head.replace("#name#",classObject.name);
+	head = head.replace(/#package#/g,classObject.package);
+	head = head.replace(/#name#/g,classObject.name);
 
 
 	var body = "";
@@ -74,9 +74,9 @@ function generateCode(classObject)
 		classObject.properties.forEach(function(d){
 
 			var func = data;
-			func = func.replace("#propertyName#",capitalizeFirstLetter(d.propertyName));
-			func = func.replace("#propertyArgName#",d.propertyName);
-			func = func.replace("#dataType#",d.dataType);
+			func = func.replace(/#propertyName#/g,capitalizeFirstLetter(d.propertyName));
+			func = func.replace(/#propertyArgName#/g,d.propertyName);
+			func = func.replace(/#dataType#/g,d.dataType);
 			func+="\n";
 			body+=func;
 		});

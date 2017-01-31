@@ -91,7 +91,19 @@ function generateCode(classObject)
 	newFileContent+=head;
 	newFileContent+=body;
 	newFileContent+=footer;
-	console.log(newFileContent);
+
+	fs.writeFile("./gen/"+classObject.name+"Interface.java",newFileContent,function(err)
+		{
+			if(err)
+			{
+				console.log(err);				
+			}
+			else
+			{
+				console.log("Done !");
+			}
+		});
+
 
 }
 

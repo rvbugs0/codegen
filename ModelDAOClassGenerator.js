@@ -80,9 +80,11 @@ function generateCode(classObject)
 	body = body.replace(/#name#/g,classObject.name);
 	body = body.replace(/#keyFirstLetterUpperCase#/g,capitalizeFirstLetter(classObject.key));
 	body = body.replace(/#keyDataTypeFirstLetterUpperCase#/g,capitalizeFirstLetter(classObject.keyDataType));
+	body = body.replace(/#keyDataType#/g,classObject.keyDataType);
 
 
 	var repeat = body.match(/<repeat\b[^>]*>([\s\S]*?)<\/repeat>/g);
+
 	console.log("repeat : "+repeat.length);
 	while(repeat.length>0)
 	{
@@ -91,27 +93,47 @@ function generateCode(classObject)
 			var newContent = repeat[0];
 			newContent = newContent.replace("<repeat>","");
 			newContent = newContent.replace("</repeat>","");
+			newContent=newContent.trim();
 			var x=1;
+
+			appendChar="";
+			if(newContent.charAt(newContent.length-1)==';')
+			{
+				appendChar="\n";
+			}
 			classObject.properties.forEach(function(data){
 
 				temp = newContent;
-				temp = temp.replace("#index#",x);
-				temp = temp.replace("#keyFirstLetterUpperCase#",capitalizeFirstLetter(classObject.key));
-				temp = temp.replace("#name#",classObject.name);
-				temp = temp.replace("#dataType#",data.dataType);
-				temp = temp.replace("#propertyName#",data.propertyName);
-				temp = temp.replace("#dataTypeFirstLetterUpperCase#",capitalizeFirstLetter(data.dataType));
-				temp = temp.replace("#propertyNameFirstLetterUppercase#",capitalizeFirstLetter(data.propertyName));
-				toAppend+=temp;
+				temp = temp.replace(/#index#/g,x);
+				temp = temp.replace(/#keyFirstLetterUpperCase#/,capitalizeFirstLetter(classObject.key));
+				temp = temp.replace(/#name#/g,classObject.name);
+				temp = temp.replace(/#dataType#/g,data.dataType);
+				temp = temp.replace(/#propertyName#/g,data.propertyName);
+				temp = temp.replace(/#dataTypeFirstLetterUpperCase#/g,capitalizeFirstLetter(data.dataType));
+				temp = temp.replace(/#propertyNameFirstLetterUppercase#/g,capitalizeFirstLetter(data.propertyName));
+				toAppend+=temp.trim();
+				toAppend+=appendChar;
 				x+=1;
 			});
+			toAppend = toAppend.substring(0,toAppend.length-1);
+			//only first occurence
 			body = body.replace(/<repeat\b[^>]*>([\s\S]*?)<\/repeat>/,toAppend);
 			repeat.shift();
 	}
 
 
 	newFileContent+=body;
-	console.log(newFileContent);
+	fs.writeFile("./gen/"+classObject.name+"DAO.java",newFileContent,function(err)
+		{
+			if(err)
+			{
+				console.log(err);				
+			}
+			else
+			{
+				console.log("Done !");
+			}
+		});
 
 }
 

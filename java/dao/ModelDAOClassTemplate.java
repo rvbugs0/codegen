@@ -75,7 +75,7 @@ if(resultSet.next()==false)
 resultSet.close();
 preparedStatement.close();
 connection.close();
-throw new DAOException("Invalid #name# #key# :"+m#name#.get#keyFirstLetterUpperCase#());
+throw new DAOException("Invalid #name# #key# :"+m#name#Interface.get#keyFirstLetterUpperCase#());
 }
 resultSet.close();
 preparedStatement.close();
@@ -108,7 +108,7 @@ throw new DAOException(exception.getMessage());
 }
 
 
-/*------------remove by code------------*/
+/*------------remove by #key#------------*/
 
 public void remove(#keyDataType# #key#) throws DAOException
 {
@@ -129,7 +129,7 @@ throw new DAOException("Invalid #name# #key# : "+#key#);
 resultSet.close();
 preparedStatement.close();
 preparedStatement=connection.prepareStatement("select #key# from child_table where #name#_#key#=?");
-preparedStatement.set#keyDataType#(1,#key#);
+preparedStatement.set#keyDataTypeFirstLetterUpperCase#(1,#key#);
 resultSet=preparedStatement.executeQuery();
 if(resultSet.next())
 {
@@ -141,7 +141,7 @@ throw new DAOException("Child exists against #name# #key# : "+#key#);
 resultSet.close();
 preparedStatement.close();
 preparedStatement=connection.prepareStatement("delete from #name# where #key#=?");
-preparedStatement.set#keyDataType#(1,#key#);
+preparedStatement.set#keyDataTypeFirstLetterUpperCase#(1,#key#);
 preparedStatement.executeUpdate();
 preparedStatement.close();
 connection.close();
@@ -175,15 +175,15 @@ preparedStatement.close();
 connection.close();
 throw new DAOException("Invalid #name# #key# : "+#key#);
 }
-#name#Interface m#name#;
-m#name#=new #name#();
+#name#Interface m#name#Interface;
+m#name#Interface=new #name#();
 <repeat>
-m#name#.set#dataTypeFirstLetterUpperCase#(resultSet.get#dataTypeFirstLetterUpperCase#("#propertyName#").trim());
+m#name#Interface.set#propertyNameFirstLetterUppercase#(resultSet.get#dataTypeFirstLetterUpperCase#("#propertyName#").trim());
 </repeat>
 resultSet.close();
 preparedStatement.close();
 connection.close();
-return unitOfMeasurementInterface;
+return m#name#Interface;
 }
 catch(SQLException sqlException)
 {
@@ -221,7 +221,7 @@ do
 {
 m#name#Interface=new #name#();
 <repeat>
-m#name#Interface.set#dataTypeFirstLetterUpperCase#(resultSet.get#dataTypeFirstLetterUpperCase#("#propertyName#"));
+m#name#Interface.set#propertyNameFirstLetterUppercase#(resultSet.get#dataTypeFirstLetterUpperCase#("#propertyName#"));
 </repeat>
 m#name#s.add(m#name#Interface);
 }while(resultSet.next());
@@ -279,7 +279,7 @@ try
 Connection connection=DAOConnection.getConnection();
 PreparedStatement preparedStatement;
 preparedStatement=connection.prepareStatement("select #key# from #name# where #key#=?");
-preparedStatement.set#keyDataType#(1,#key#);
+preparedStatement.set#keyDataTypeFirstLetterUpperCase#(1,#key#);
 ResultSet resultSet=preparedStatement.executeQuery();
 boolean found;
 found=resultSet.next();
